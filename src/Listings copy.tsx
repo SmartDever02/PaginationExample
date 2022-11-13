@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 
 // components
 import ImageBlock from "./components/ImageBlock"
@@ -19,12 +19,23 @@ export const Listings = () => {
   const [selected, setSelected] = useState<number>(0)
   const [limit, setLimit] = useState<number>(2)
   const [searchData, setSearchData] = useState<Array<Listing>>(listingData)
-  {
-    /* */
-  }
-  const pagedData = searchData.filter(
-    (_row: Listing, i: number) => i >= selected * limit && i < selected * limit + limit
-  )
+  const [pagedData, setPagedData] = useState<Array<Listing>>(searchData.slice(selected, limit))
+
+  useEffect(() => {
+    const timerID = setTimeout(() => {
+      const data: Listing[] = []
+      searchData.forEach((row: Listing, i: number) => {
+        if (i >= selected * limit && i < selected * limit + limit) {
+          data.push(row)
+        }
+      })
+      setPagedData(data)
+    }, 1000)
+
+    return () => {
+      clearTimeout(timerID)
+    }
+  }, [selected, limit, searchData])
 
   return (
     <div className={"content"}>
@@ -66,12 +77,18 @@ export const Listings = () => {
           {pagedData.map((listing: Listing, index: number) => {
             return (
               <div className="listing" key={index}>
-                <ImageBlock {...listing} labels={listing.imageLabels} />
+                <ImageBlock
+                  imageURL={listing.imageURL}
+                  deadline={listing.deadline}
+                  labels={listing.imageLabels}
+                />
                 <InfoBlock
-                  {...listing}
+                  title={listing.name}
+                  address={listing.address}
+                  tableHeader={listing.tableHeader}
+                  tableSubheader={listing.tableSubheader}
                   labels={listing.listingLabels}
                   unitRows={listing.unitTableData}
-                  title={listing.name}
                 />
               </div>
             )

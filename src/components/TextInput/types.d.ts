@@ -2,5 +2,5 @@ interface TextInputProps {
   className?: string
   label: string
   placeholder: string
-  onChange?: (e: any) => void
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }
