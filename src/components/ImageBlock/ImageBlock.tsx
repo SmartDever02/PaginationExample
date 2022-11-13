@@ -7,11 +7,11 @@ const ImageBlock = (props: ImageBlockProps) => {
       {props.labels.length > 0 && (
         <div className={"label-container"}>
           {props.labels.map((label, index) => {
-            return <Label text={label} styleType={"image"} />
+            return <Label key={label + index} text={label} styleType={"image"} />
           })}
         </div>
       )}
-      <img src={props.imageURL} alt={"A photo of the building"} />
+      <img src={props.imageURL} alt={"A photo of the building"} loading="lazy" />
       <div className={"deadline"}>{`Application Deadline: ${props.deadline}`}</div>
     </div>
   )

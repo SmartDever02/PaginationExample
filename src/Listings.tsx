@@ -17,10 +17,14 @@ export const Listings = () => {
   const listingData = mockData as Listing[]
 
   const [selected, setSelected] = useState<number>(0)
-  const [limit, setLimit] = useState<number>(2)
+  const [limit, setLimit] = useState<number>(10)
   const [searchData, setSearchData] = useState<Array<Listing>>(listingData)
   {
-    /* */
+    /*
+    Removed the state pagedData since it' s unnecessary.
+    we can get pagedData from the states(searchData, selected, limit)
+    also used Array.filter() to get pagedData. 
+    */
   }
   const pagedData = searchData.filter(
     (_row: Listing, i: number) => i >= selected * limit && i < selected * limit + limit
@@ -66,6 +70,9 @@ export const Listings = () => {
           {pagedData.map((listing: Listing, index: number) => {
             return (
               <div className="listing" key={index}>
+                {/* 
+                  Here, passed props destructing the listing object since most props names are the same.
+                */}
                 <ImageBlock {...listing} labels={listing.imageLabels} />
                 <InfoBlock
                   {...listing}
